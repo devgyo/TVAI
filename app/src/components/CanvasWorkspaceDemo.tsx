@@ -92,6 +92,7 @@ const RESIZE_OUTSET = 10;
 const LAYOUT_STORAGE_KEY = 'tv-prototype.watchlists.canvas-layouts.v1';
 const HIDDEN_CARDS_STORAGE_KEY = 'tv-prototype.watchlists.hidden-cards.v1';
 const EXTRA_CARDS_STORAGE_KEY = 'tv-prototype.watchlists.extra-cards.v1';
+const DEFAULT_VISIBLE_CARD_TYPES: CardId[] = ['ticker', 'main', 'event', 'news'];
 
 const INITIAL_LAYOUTS: Record<CardId, CardLayout> = {
   ticker: { x: CANVAS_PADDING, y: CANVAS_PADDING, width: 272, height: 768 },
@@ -114,6 +115,7 @@ const INITIAL_LAYOUTS: Record<CardId, CardLayout> = {
 };
 
 const BASE_CARD_TYPES = Object.keys(INITIAL_LAYOUTS) as CardId[];
+const DEFAULT_HIDDEN_CARD_IDS = BASE_CARD_TYPES.filter((type) => !DEFAULT_VISIBLE_CARD_TYPES.includes(type));
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -510,6 +512,8 @@ export function CanvasWorkspaceDemo({
     }
     if (persistedHiddenCards.length > 0) {
       setHiddenCards(persistedHiddenCards);
+    } else {
+      setHiddenCards(DEFAULT_HIDDEN_CARD_IDS);
     }
     if (persistedExtraCards.length > 0) {
       setExtraCards(persistedExtraCards);
