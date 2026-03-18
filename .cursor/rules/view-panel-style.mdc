@@ -1,0 +1,43 @@
+---
+description: 所有 View 面板与 Watchlist 样式完全一致，新增/修改 view 时必须复用此规范
+alwaysApply: true
+---
+
+# View 面板统一样式（与 Watchlist 一致）
+
+所有通过 topNav 打开的 view（Watchlists、Screener、Trends AI、Chart 等）在 **style 上必须与 Watchlist 一模一样**。
+
+## 规范来源
+
+- 样式常量与工具函数：`@/constants/view-panel-style.ts`
+- 主题变量与默认色：`@/constants/nav-theme.ts`
+
+## 必须遵守的样式要点
+
+1. **面板容器**
+   - 宽度 `280px`，圆角 `16px`
+   - 布局：`flex h-full shrink-0 flex-col overflow-hidden rounded-[16px]`
+   - 样式：`asideStyle` + `border: 1px solid {borderColor}` + `backgroundColor: {backgroundColor}`（默认用 `WATCHLIST_BORDER` / `WATCHLIST_BG`）
+
+2. **面板标题（h2）**
+   - `shrink-0 px-3 pt-3 pb-3 text-[13px] font-semibold text-[#F2F2F7]`
+   - `fontFamily: var(--font-inter)`
+
+3. **可滚动区域**
+   - 使用 ReactLenis，className：`scrollbar-invisible flex-1 min-h-0 overflow-hidden px-2 pb-4`
+   - Lenis 配置与 Watchlist 相同（见 `VIEW_PANEL_LENIS_OPTIONS`）
+
+4. **列表项按钮（nav item）**
+   - `flex cursor-pointer items-center gap-1.5 rounded-lg px-1.5 py-1.5 text-left text-[13px] text-[#F2F2F7]`
+   - transition：`duration-[280ms] ease-[cubic-bezier(0.4,0,0.2,1)]`
+   - focus：`ring-2 ring-[#444444] ring-offset-2 ring-offset-[#1C1C1E]`
+   - 列表项间距：`flex flex-col gap-[2px]`
+
+5. **外层包裹（page 里包 view 的 div）**
+   - `flex h-full shrink-0 flex-col p-3 pt-0 pb-8`
+   - 内部再包一层：`min-h-0 flex-1`，里面放具体 view 组件
+
+## 使用方式
+
+- 新建 view 时从 `view-panel-style.ts` 引入 `getViewPanelStyle`、`VIEW_PANEL_*` 常量和 `VIEW_PANEL_LENIS_OPTIONS`，按上述结构搭 DOM 和 className。
+- 不要为其他 view 单独发明新的宽度、圆角、内边距或字体大小，一律与 Watchlist 一致。

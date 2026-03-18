@@ -1,0 +1,285 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+@import "tippy.js/dist/tippy.css";
+
+/* Tippy.js 自定义样式覆盖 */
+#tippy-root .tippy-box,
+.tippy-box[data-theme],
+.tippy-box {
+  padding: 6px 6px !important;
+  min-height: auto !important;
+  line-height: 1.2 !important;
+  border: none !important;
+}
+
+html {
+  color-scheme: dark;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Bar 主题颜色（项目层定义，light/dark 通过 .light/.dark 切换） */
+:root {
+  --bar-bg: #1a1a1a;
+  --bar-border: #404040;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #fafafa;
+}
+
+/* 全局隐藏滚动条（保留滚动行为） */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* 首页卡片：与导航按钮一致的 hover/点击效果（颜色由 Sim 的 --card-hover、--card-active 控制） */
+.card-hoverable {
+  transition:
+    background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.15s ease;
+}
+.card-hoverable:hover {
+  background-color: var(--card-hover) !important;
+}
+.card-hoverable:active {
+  background-color: var(--card-active) !important;
+  transform: scale(0.98);
+}
+
+/* 导航项通用样式（data-nav-item）- ghost 风格：透明底，hover/选中时轻微高亮 */
+[data-nav-item] {
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-nav-item]:hover {
+  background-color: transparent !important;
+  border-color: transparent;
+}
+[data-nav-item][data-selected="true"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* 顶部 nav：tab 风格，仅文字；默认灰色，选中白色 */
+.top-nav-tabs [data-nav-item] {
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0;
+  color: #a1a1aa;
+}
+.top-nav-tabs [data-nav-item]:hover {
+  background-color: transparent !important;
+}
+.top-nav-tabs [data-nav-item][data-selected="true"] {
+  background-color: transparent !important;
+  color: #f2f2f7;
+}
+
+[data-nav-item] .nav-item-dots {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+[data-nav-item]:hover .nav-item-dots {
+  opacity: 1;
+}
+
+/* 隐形滚动条：保留滚动，不显示滚动条 */
+.scrollbar-invisible {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-invisible::-webkit-scrollbar {
+  display: none;
+}
+
+/* 页面/视图切换：淡入 + 轻微上滑，与全局 280ms 缓动一致 */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-transition-in {
+  animation: page-fade-in 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes page-fade-only {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-fade-in {
+  animation: page-fade-only 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Watchlist 内 Tickers / Event / Heatmap / News 面板显隐 */
+@keyframes view-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.view-panel-in {
+  animation: view-panel-in 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 横向面板（Tickers 等）离开：向右滑出 + 淡出 */
+@keyframes view-panel-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+.view-panel-out {
+  animation: view-panel-out 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Event / News：分两部分
+ * 1. 开关动效（进入 + 离开）
+ * 2. 开关时对应高度/长度的变化过渡
+ */
+
+/* ---------- 1. Event/News 开关动效：进入、离开 ---------- */
+@keyframes view-panel-stack-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.view-panel-stack-in {
+  animation: view-panel-stack-in 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes view-panel-stack-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+.view-panel-stack-out {
+  animation: view-panel-stack-out 0.24s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Live 状态绿点闪烁 */
+@keyframes live-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.live-dot {
+  animation: live-blink 2.2s ease-in-out infinite;
+}
+
+/* 底部 bar 动效：方案 B 轻微缩放（WL↔Ticker、Ticker 互切、Ticker→WL 统一） */
+@keyframes bar-ticker-enter {
+  from {
+    transform: scale(0.97);
+    opacity: 0.92;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.bar-ticker-enter {
+  animation: bar-ticker-enter 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ---------- Command+2 Bar 动效 Demo 方案（多选一） ---------- */
+@keyframes bar-demo-1 {
+  from { transform: translateY(8px); opacity: 0.9; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes bar-demo-2 {
+  from { transform: scale(0.97); opacity: 0.92; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes bar-demo-3 {
+  from { transform: translateY(6px); }
+  to { transform: translateY(0); }
+}
+@keyframes bar-demo-4 {
+  from { opacity: 0.82; }
+  to { opacity: 1; }
+}
+@keyframes bar-demo-5 {
+  from { transform: translateY(6px) scale(0.98); opacity: 0.9; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes bar-demo-6 {
+  from { transform: translateY(10px); opacity: 0.88; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.bar-demo-1-run { animation: bar-demo-1 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.bar-demo-2-run { animation: bar-demo-2 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.bar-demo-3-run { animation: bar-demo-3 0.26s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.bar-demo-4-run { animation: bar-demo-4 0.24s ease-out forwards; }
+.bar-demo-5-run { animation: bar-demo-5 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.bar-demo-6-run { animation: bar-demo-6 0.32s cubic-bezier(0.34, 1.15, 0.64, 1) forwards; }
+
+/* 全屏 Overlay 打开动效：遮罩淡入 + 内容轻微上移淡入 */
+@keyframes overlay-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes overlay-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.overlay-open {
+  animation: overlay-backdrop-in 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.overlay-open .overlay-content {
+  animation: overlay-content-in 0.28s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ---------- 2. Event/News 开关时高度/长度变化（flex、列宽） ---------- */
+.view-panel-event-news-resize {
+  transition: flex 0.32s cubic-bezier(0.4, 0, 0.2, 1), min-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.view-panel-event-news-column {
+  transition: max-width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 面板宽度变化（max-width / flex）过渡，让 heatmap 宽度变化有动效 */
+.view-panel-width-transition {
+  transition: max-width 0.32s cubic-bezier(0.4, 0, 0.2, 1), flex 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Darkpool 双槽：宽度（flex）与高度（max-height）同步过渡 */
+.view-panel-darkpool-slot {
+  transition:
+    flex 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
