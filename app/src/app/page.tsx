@@ -1,7 +1,5 @@
-'use client';
-
-import HomePageClient from './HomePageClient';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <HomePageClient />;
+  redirect('/watchlists');
 }
